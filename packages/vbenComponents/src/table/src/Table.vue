@@ -1,8 +1,8 @@
 <script lang="ts" setup name="VbenTable">
 import 'xe-utils'
-import 'vxe-table/lib/style.css'
+import 'vxe-table/styles/index.scss'
 import type { VbenTableProps } from './type'
-import { computed, PropType, ref, unref, useAttrs, useSlots, watch } from 'vue'
+import { computed, PropType, ref, unref, useAttrs, watch } from 'vue'
 import { isBoolean, isFunction } from '@vben/utils'
 import { VxeTableInstance } from 'vxe-table'
 import { ThemeEnum } from '@vben/constants'
@@ -19,10 +19,13 @@ watch(
     if (appStore.getDarkMode == ThemeEnum.DARK) {
       import('./scss/dark.scss')
     }
+    //刷新页面重置SCSS
     if (appStore.getDarkMode === ThemeEnum.LIGHT) {
-      window.location.reload()
+      import('./scss/light.scss')
+      // window.location.reload()
     }
   },
+  { immediate: true },
 )
 const attrs = useAttrs()
 const emit = defineEmits(['register'])
@@ -110,7 +113,7 @@ const getPageConfig = (options: VbenTableProps) => {
 const setProps = (prop: Partial<VbenTableProps>) => {
   innerProps.value = { ...unref(innerProps), ...prop }
 }
-defineExpose({ reload })
+defineExpose({ reload, Ref: xGrid })
 emit('register', { reload, setProps })
 </script>
 <template>
